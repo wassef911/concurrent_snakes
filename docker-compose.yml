@@ -6,4 +6,4 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/app
-    command: python entrypoint.py
+    command: python -u entrypoint.py

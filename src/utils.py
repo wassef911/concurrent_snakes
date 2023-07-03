@@ -6,7 +6,7 @@ from typing import Dict, List
 import unidecode
 
 OUTPUT_FOLDER = "/home/wassef/Desktop/code/personal/async_python/src/out"
-URLS = ["https://jsonplaceholder.typicode.com/todos" for i in range(1000)]
+URLS = [f"https://jsonplaceholder.typicode.com/todos/{i}" for i in range(40)]
 
 timestamp = lambda: datetime.timestamp(datetime.now())
 
