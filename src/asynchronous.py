@@ -1,3 +1,4 @@
+import asyncio
 from os import path
 from typing import Dict, List
 
@@ -16,8 +17,9 @@ async def main(urls: List[str]) -> None:
     options = FirefoxOptions()
     options.add_argument("--headless")
     driver = webdriver.Firefox(options=options)
-    for url in urls:
-        result, title = await get_url_content(url, driver)
+    tasks = [asyncio.create_task(get_url_content(url, driver)) for url in urls]
+    for task in tasks:
+        result, title = await task
         out_path = path.join(OUTPUT_FOLDER, f"{slugify(title)}_{timestamp()}.txt")
         try:
             write_dict_to_file(result, out_path)
