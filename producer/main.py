@@ -1,7 +1,7 @@
 import socket
 import sys
 import time
-from typing import List
+from typing import Dict, List
 
 import requests
 from confluent_kafka import KafkaException, Producer
@@ -14,11 +14,10 @@ conf = {
     'bootstrap.servers': config("KAFKA_BOOTSTRAP_SERVER"),
     'client.id': socket.gethostname(),
 }
-
 producer = Producer(conf)
 
 
-def fetch_url(url: str) -> str:
+def fetch_url(url: str) -> Dict:
     response = requests.get(url)
     response.raise_for_status()
     return response.json()

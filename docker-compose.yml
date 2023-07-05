@@ -54,13 +54,13 @@ services:
       - KAFKA_TOPIC=sync_data
       - KAFKA_BOOTSTRAP_SERVER=kafka:9092
       - ZOOKEEPER_CONNECT=zookeeper:2181
-
-#  async_producer:
-#    <<: *producer
-#    command: "infisical run -- /app/amain.py"
-#    environment:
-#      - KAFKA_TOPIC=async_data
-#      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-#      - ZOOKEEPER_CONNECT=zookeeper:2181
+      
+  async_producer:
+    <<: *producer
+    command: "infisical run -- /app/amain.py"
+    environment:
+      - KAFKA_TOPIC=async_data
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+      - ZOOKEEPER_CONNECT=zookeeper:2181
 networks:
   kafka-network:
