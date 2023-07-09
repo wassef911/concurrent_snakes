@@ -5,7 +5,9 @@ x-app:
     build:
       context: .
       dockerfile: Dockerfile.producer
-    restart: never
+    restart: on-failure
+    volumes:
+      - ./producer:/app
     networks:
       - kafka-network
     depends_on:
@@ -19,10 +21,13 @@ services:
     ports:
       - "9092:9092"
     environment:
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
-      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
-      - KAFKA_CREATE_TOPICS=sync_data:1:1,async_data:1:1
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: sync_data:1:1,async_data:1:1
     networks:
       - kafka-network
     depends_on:
@@ -38,7 +43,8 @@ services:
     ports:
       - "2181:2181"
     environment:
-      - ZOOKEEPER_CLIENT_PORT=2181
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - kafka-network
     healthcheck:
@@ -49,18 +55,16 @@ services:
 
   sync_producer:
     <<: *producer
-    command: "infisical run -- /app/main.py"
+    command: "python3 /app/main.py"
     environment:
-      - KAFKA_TOPIC=sync_data
-      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-      - ZOOKEEPER_CONNECT=zookeeper:2181
+      KAFKA_TOPIC: sync_data
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
       
   async_producer:
     <<: *producer
-    command: "infisical run -- /app/amain.py"
+    command: "python3 /app/amain.py"
     environment:
-      - KAFKA_TOPIC=async_data
-      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-      - ZOOKEEPER_CONNECT=zookeeper:2181
+      KAFKA_TOPIC: async_data
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
 networks:
   kafka-network:
