@@ -1,5 +1,4 @@
 import asyncio
-import json
 import sys
 import time
 from typing import Dict, List
