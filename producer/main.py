@@ -4,13 +4,13 @@ import time
 from typing import Dict, List
 
 import requests
-from confluent_kafka import KafkaException, Producer
+from confluent_kafka import Producer
 from decouple import config
 from src.utils import URLS
 
 TOPIC = config("KAFKA_TOPIC")
 conf = {
-    "bootstrap.servers": "localhost:9092",
+    "bootstrap.servers": config("KAFKA_BOOTSTRAP_SERVER"),
     "client.id": socket.gethostname(),
 }
 producer = Producer(conf)
@@ -27,7 +27,7 @@ def main(URLS: List[str]) -> None:
         start_time = time.time()
         for url in URLS:
             data = fetch_url(url)
-            producer.produce(TOPIC, str(data))
+            producer.produce(TOPIC, f"{data}")
         end_time = time.time()
         exec_time = end_time - start_time
         print(f"looped through all urls in {exec_time}")
