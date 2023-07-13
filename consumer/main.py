@@ -7,7 +7,7 @@ from decouple import config
 TOPIC = config("KAFKA_TOPIC")
 conf = {
     "bootstrap.servers": config("KAFKA_BOOTSTRAP_SERVER"),
-    "group.id": socket.gethostname(),
+    "group.id": "main",
 }
 consumer = Consumer(conf)
 

@@ -10,7 +10,7 @@ TOPIC = config("KAFKA_TOPIC", default="async_data")
 
 async def main() -> None:
     consumer = AIOKafkaConsumer(
-        TOPIC, bootstrap_servers=config("KAFKA_BOOTSTRAP_SERVER")
+        TOPIC, bootstrap_servers=config("KAFKA_BOOTSTRAP_SERVER"), group_id="amain"
     )
     await consumer.start()
     while True:
