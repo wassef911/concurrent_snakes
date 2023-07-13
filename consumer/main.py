@@ -16,9 +16,10 @@ def main() -> None:
     consumer.subscribe([TOPIC])
     while True:
         msg = consumer.poll(1.0)
-        if msg.error():
-            raise Exception(msg.error() if msg != None else "faced some error")
-        print("Received: {}".format(msg.value().decode("utf-8")))
+        if hasattr(msg, "error") and msg.error():
+            raise Exception(msg.error())
+        if hasattr(msg, "value"):
+            print("Received: {}".format(msg.value().decode("utf-8")))
 
 
 if __name__ == "__main__":

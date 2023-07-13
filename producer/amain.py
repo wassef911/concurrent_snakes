@@ -23,9 +23,7 @@ async def process_url(url: str, producer: AIOKafkaProducer, topic: str):
 
 
 async def main(URLS: List[str]) -> None:
-    producer = AIOKafkaProducer(
-        bootstrap_servers=config("KAFKA_BOOTSTRAP_SERVER", default="localhost:9093")
-    )
+    producer = AIOKafkaProducer(bootstrap_servers=config("KAFKA_BOOTSTRAP_SERVER"))
     await producer.start()
     while True:
         start_time = time.time()
