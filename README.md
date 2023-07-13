@@ -9,5 +9,5 @@ after running both producers querying **jsonplaceholder.typicode.com** endpoints
 ![Screenshot](https://github.com/wassef911/concurrent_snakes/blob/master/images/producer_benchmark.png?raw=true)
 
 # CONSUMERS:
-![Screenshot](https://github.com/wassef911/concurrent_snakes/blob/master/images/consumer_benchmark.png?raw=true)
 although messages to the async topic are being published at much faster rate, the "async syntax" consumer kept a similar performance...
+![Screenshot](https://github.com/wassef911/concurrent_snakes/blob/master/images/consumer_benchmark.png?raw=true)
